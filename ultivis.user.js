@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        univis
+// @name        ultivis
 // @namespace   TimidScript
-// @description univis
+// @description ultivis
 // @include     http://univis.uni-erlangen.de/*
 // @version     1
 // @grant       none
