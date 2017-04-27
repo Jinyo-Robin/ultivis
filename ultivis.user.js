@@ -3,6 +3,9 @@
 // @namespace   TimidScript
 // @description ultivis
 // @include     http://univis.uni-erlangen.de/*
+// @require     jquery.min.js
+// @require     ultivis.user.css.js
+// @require     ultivis.user.html.js
 // @version     1
 // @grant       none
 // ==/UserScript==
@@ -31,64 +34,22 @@ function parseAllPersons(aElementArray) {
 
 // --- GUI start
 let parent;
-let style = document.createElement('style');
-let css = '\
-  .navBar {\
-    border: 1px solid black;\
-    height: 20px;\
-    width: 100%;\
-    display: table;\
-  }\
-  .tcell {\
-    display: table-cell;\
-    overflow: hidden;\
-  }\
-  .w15 {\
-    width: 15px;\
-  }\
-  .w30 {\
-    width: 30px;\
-  }\
-  .w60 {\
-    width: 60px;\
-  }\
-  .w120 {\
-    width: 120px;\
-  }\
-  button {\
-    position: absolute;\
-  }\
-  #controlPanel {\
-    background:#ffa;\
-    height: calc(100% - 8px);\
-    width: calc(100% - 16px);\
-    position: absolute;\
-    display: none;\
-  }\
-  #inlineConsole {\
-    border: 1px solid black;\
-    height: 20px;\
-  }\
-';
-let navBar = document.createElement('div');
+
+let navBarContainer = document.createElement('div');
 let controlPanel = document.createElement('div');
-let controlPanelVisible = false;
 let inlineConsole = document.createElement('div');
+
+let controlPanelVisible = false;
+let controlPanelText = "";
+let inlineConsoleText = "";
 
 (function GUIconstruct () {
   // style
-  style.type = 'text/css';
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-  parent = document.head || document.querySelector('head');
-  parent.appendChild(style);
-  // nav bar
-  navBar.setAttribute('class','navBar');
+  
+  // nav bar container
+  navBarContainer.setAttribute('class','navBarContainer');
   parent = document.body || document.querySelector('body');
-  parent.insertBefore(navBar, parent.firstChild);
+  parent.insertBefore(navBarContainer, parent.firstChild);
   // control panel
   controlPanel.setAttribute('id','controlPanel');
   parent = document.body || document.querySelector('body');
@@ -110,10 +71,12 @@ function toggleControlPanel () {
 }
 
 function GUIrefresh () {
-  navBar.innerHTML = '\
-    <div class="tcell"></div>\
-    <div class="tcell w60">\
-    <button class="toggleControlPanel">open</button>\
+  navBarContainer.innerHTML = '\
+    <div class="navBar">\
+      <div class="tcell"></div>\
+      <div class="tcell w60">\
+      <button class="toggleControlPanel">open</button>\
+      </div>\
     </div>\
   ';
   controlPanel.innerHTML = '\
@@ -123,8 +86,15 @@ function GUIrefresh () {
         <button class="toggleControlPanel">close</button>\
       </div>\
     </div>\
+    <div class="table">\
+      <div class="trow">\
+        <div class="tcell border">' + controlPanelText + '</div>\
+      </div>\
+    </div>\
   ';
-  inlineConsole.innerHTML = '';
+  inlineConsole.innerHTML = '\
+  ' + inlineConsoleText + '\
+  ';
   // add functions
   let functionElements = document.querySelectorAll('.toggleControlPanel');
   for (let i = 0; i < functionElements.length; i++) {
@@ -158,7 +128,7 @@ function GUIrefresh () {
 
   // lecture overview
   if (window.location.href.indexOf('tum_show') > -1 || document.querySelector('h2') && document.querySelector('h2').innerText.indexOf('Lehrveranstaltungsverzeichnis') > -1) {
-    console.log('2/5: starting lecture list: url = ' + window.location.href.indexOf('tum_show'));
+    console.log('2/5: starting lecture overview: url = ' + window.location.href.indexOf('tum_show'));
     var heads = document.querySelectorAll('h4');
     // collect all lectures information
     var lectureObjects = [];
@@ -175,6 +145,15 @@ function GUIrefresh () {
     }
     console.log('lectureObjects:');
     console.log(lectureObjects);
+    for (let i = 0; i < lectureObjects.length; i++) {
+      for (let key in lectureObjects[i]) {
+        if (lectureObjects[i].hasOwnProperty(key)) {
+          controlPanelText += key + '::' + lectureObjects[i][key] + '</br>';
+        }
+      }
+      controlPanelText += '</br>'
+    }
+    GUIrefresh();
     // list lectures without short name
     var lecturesWithoutShortName = [];
     for (var i = 0, len = heads.length; i < len; i++) {
@@ -230,9 +209,6 @@ function GUIrefresh () {
   addToLocalStorageArray('urlList', window.location.href);
   console.log(JSON.parse(window.localStorage.urlList));
 })();
-
-(function setPagetype () {
-  inlineConsole.innerHTML += "Hello World!";
-})();
 // --- MAIN end
 
+callMe();
