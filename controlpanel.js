@@ -7,21 +7,25 @@ var containerNavbar = {
       </div>\
     </div>\
   '
-}
+};
 
 var containerControlpanel = {
   HTML : '\
     <div class="navBar">\
-      <div class="tcell"></div>\
-      <div class="tcell w60">\
-      <button class="toggleControlPanel">open</button>\
-      </div>\
+        <div class="tcell"></div>\
+        <div class="tcell w60">\
+            <button class="toggleControlPanel">close</button>\
+        </div>\
     </div>\
-  '
-}
+    <div class="table">\
+        <div class="trow">\
+            <div class="tcell border"> content here</div>\
+        </div>\
+    </div>\
+'
+};
 
 var controlpanel = {
-    teststring : "my teststring",
     containerNavbar : document.createElement('div'),
     containerControlpanel : document.createElement('div'),
     containerControlpanelText : "",
@@ -60,4 +64,4 @@ var controlpanel = {
       functionElements[i].addEventListener ("click", () => {gui.toggleContainerControlpanelVisible();}, false);
     }
   }
-}
+};

@@ -14,4 +14,4 @@ var test = {
             console.log("no tests so far");
         }
     ]
-}
+};

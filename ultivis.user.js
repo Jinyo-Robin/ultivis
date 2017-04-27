@@ -32,79 +32,37 @@ function parseAllPersons(aElementArray) {
   }
   return persons;
 }
-
 // --- utils end
 
 
-/*
-
 // --- GUI start
 
-
 var containerInlineconsole = {
-  HTML : '\
-    <div class="navBar">\
-      <div class="tcell"></div>\
-      <div class="tcell w60">\
-        <button class="toggleContainerControlpanelVisible">close</button>\
-      </div>\
-    </div>\
-    <div class="table">\
-      <div class="trow">\
-        <div class="tcell border">' + controlPanelText + '</div>\
-      </div>\
-    </div>\
-  '
-}
+  HTML : 'test'
+};
 
 var gui = {
-  containerNavbar : document.createElement('div'),
-  containerControlpanel : document.createElement('div'),
-  containerControlpanelText : "",
-  containerControlpanelVisible : false,
-  toggleContainerControlpanelVisible : function () {
-    containerControlpanelVisible = !containerControlpanelVisible;
-    if (containerControlpanelVisible) {
-      containerControlpanel.style.display = "block";
-    } else {
-      containerControlpanel.style.display = "none";
-    }
-  },
   containerInlineconsole : document.createElement('div'),
   containerInlineconsoleText : "",
-  construct : function () {
-    let parent;
-    // nav bar container
-    this.containerNavbar.setAttribute('class','containerNavbar');
-    parent = document.body || document.querySelector('body');
-    parent.insertBefore(this.containerNavbar, parent.firstChild);
-    // control panel
-    this.containerControlpanel.setAttribute('id','containerControlpanel');
-    parent = document.body || document.querySelector('body');
-    parent.insertBefore(this.containerControlpanel, parent.firstChild);
+  run : function () {
+    var parent;
     // inline console
-    this.containerInlineconsole.setAttribute('id','containerInlineconsole');
+    this.containerInlineconsole.setAttribute('id', 'containerInlineconsole');
     parent = document.querySelectorAll('table')[0].children[0].children[3].children[0];
     parent.insertBefore(this.containerInlineconsole, null);
+        console.log("robin was here!");
+
     this.refresh();
-    this.addFunctions();
   },
   refresh : function () {
-    this.containerNavbar.innerHTML = containerNavbar.HTML;
-    this.containerControlpanel.innerHTML = containerControlpanel.HTML;
     this.containerInlineconsole.innerHTML = containerInlineconsole.HTML;
-  },
-  addFunctions : function () {
-    // toggleContainerControlpanelVisible
-    let functionElements = document.querySelectorAll('.toggleContainerControlpanelVisible');
-    for (let i = 0; i < functionElements.length; i++) {
-      functionElements[i].addEventListener ("click", () => {gui.toggleContainerControlpanelVisible();}, false);
-    }
   }
-}
-gui.construct();
+};
+
+gui.run();
+
 // --- GUI end
-*/
+
 
 // --- MAIN start
 (function checkSitetype () {

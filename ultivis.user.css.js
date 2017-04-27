@@ -54,7 +54,7 @@ let css = '\
     position: absolute;\
     display: none;\
   }\
-  #inlineConsole {\
+  #containerInlineconsole {\
     border: 1px solid black;\
     height: 20px;\
   }\
