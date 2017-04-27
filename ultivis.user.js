@@ -5,7 +5,8 @@
 // @include     http://univis.uni-erlangen.de/*
 // @require     jquery.min.js
 // @require     ultivis.user.css.js
-// @require     ultivis.user.html.js
+// @require     config.js
+// @require     test.js
 // @version     1
 // @grant       none
 // ==/UserScript==
@@ -30,60 +31,40 @@ function parseAllPersons(aElementArray) {
   }
   return persons;
 }
+
 // --- utils end
 
+/*
+
 // --- GUI start
-let parent;
-
-let navBarContainer = document.createElement('div');
-let controlPanel = document.createElement('div');
-let inlineConsole = document.createElement('div');
-
-let controlPanelVisible = false;
-let controlPanelText = "";
-let inlineConsoleText = "";
-
-(function GUIconstruct () {
-  // style
-  
-  // nav bar container
-  navBarContainer.setAttribute('class','navBarContainer');
-  parent = document.body || document.querySelector('body');
-  parent.insertBefore(navBarContainer, parent.firstChild);
-  // control panel
-  controlPanel.setAttribute('id','controlPanel');
-  parent = document.body || document.querySelector('body');
-  parent.insertBefore(controlPanel, parent.firstChild);
-  // inline console
-  inlineConsole.setAttribute('id','inlineConsole');
-  parent = document.querySelectorAll('table')[0].children[0].children[3].children[0];
-  parent.insertBefore(inlineConsole, null);
-  GUIrefresh();
-})();
-
-function toggleControlPanel () {
-  controlPanelVisible = !controlPanelVisible;
-  if (controlPanelVisible) {
-    controlPanel.style.display = "block";
-  } else {
-    controlPanel.style.display = "none";
-  }
-}
-
-function GUIrefresh () {
-  navBarContainer.innerHTML = '\
+var containerNavbar = {
+  html : '\
     <div class="navBar">\
       <div class="tcell"></div>\
       <div class="tcell w60">\
       <button class="toggleControlPanel">open</button>\
       </div>\
     </div>\
-  ';
-  controlPanel.innerHTML = '\
+  '
+}
+
+var containerControlpanel = {
+  HTML : '\
     <div class="navBar">\
       <div class="tcell"></div>\
       <div class="tcell w60">\
-        <button class="toggleControlPanel">close</button>\
+      <button class="toggleControlPanel">open</button>\
+      </div>\
+    </div>\
+  '
+}
+
+var containerInlineconsole = {
+  HTML : '\
+    <div class="navBar">\
+      <div class="tcell"></div>\
+      <div class="tcell w60">\
+        <button class="toggleContainerControlpanelVisible">close</button>\
       </div>\
     </div>\
     <div class="table">\
@@ -91,17 +72,57 @@ function GUIrefresh () {
         <div class="tcell border">' + controlPanelText + '</div>\
       </div>\
     </div>\
-  ';
-  inlineConsole.innerHTML = '\
-  ' + inlineConsoleText + '\
-  ';
-  // add functions
-  let functionElements = document.querySelectorAll('.toggleControlPanel');
-  for (let i = 0; i < functionElements.length; i++) {
-    functionElements[i].addEventListener ("click", () => {toggleControlPanel();}, false);
+  '
+}
+
+var gui = {
+  containerNavbar : document.createElement('div'),
+  containerControlpanel : document.createElement('div'),
+  containerControlpanelText : "",
+  containerControlpanelVisible : false,
+  toggleContainerControlpanelVisible : function () {
+    containerControlpanelVisible = !containerControlpanelVisible;
+    if (containerControlpanelVisible) {
+      containerControlpanel.style.display = "block";
+    } else {
+      containerControlpanel.style.display = "none";
+    }
+  },
+  containerInlineconsole : document.createElement('div'),
+  containerInlineconsoleText : "",
+  construct : function () {
+    let parent;
+    // nav bar container
+    this.containerNavbar.setAttribute('class','containerNavbar');
+    parent = document.body || document.querySelector('body');
+    parent.insertBefore(containerNavbar, parent.firstChild);
+    // control panel
+    this.containerControlpanel.setAttribute('id','containerControlpanel');
+    parent = document.body || document.querySelector('body');
+    parent.insertBefore(containerControlpanel, parent.firstChild);
+    // inline console
+    this.containerInlineconsole.setAttribute('id','containerInlineconsole');
+    parent = document.querySelectorAll('table')[0].children[0].children[3].children[0];
+    parent.insertBefore(containerInlineconsole, null);
+    this.refresh();
+    this.addFunctions();
+  },
+  refresh : function () {
+    this.containerNavbar.innerHTML = containerNavbar.HTML;
+    this.containerControlpanel.innerHTML = containerControlpanel.HTML;
+    this.containerInlineconsole.innerHTML = containerInlineconsole.HTML;
+  },
+  addFunctions : function () {
+    // toggleContainerControlpanelVisible
+    let functionElements = document.querySelectorAll('.toggleContainerControlpanelVisible');
+    for (let i = 0; i < functionElements.length; i++) {
+      functionElements[i].addEventListener ("click", () => {gui.toggleContainerControlpanelVisible();}, false);
+    }
   }
 }
+gui.construct();
 // --- GUI end
+*/
 
 // --- MAIN start
 (function checkSitetype () {
@@ -211,4 +232,6 @@ function GUIrefresh () {
 })();
 // --- MAIN end
 
-callMe();
+if (config.test) {
+  test.run();
+}
