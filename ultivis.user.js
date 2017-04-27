@@ -7,6 +7,7 @@
 // @require     ultivis.user.css.js
 // @require     config.js
 // @require     test.js
+// @require     controlpanel.js
 // @version     1
 // @grant       none
 // ==/UserScript==
@@ -34,30 +35,11 @@ function parseAllPersons(aElementArray) {
 
 // --- utils end
 
+
 /*
 
 // --- GUI start
-var containerNavbar = {
-  html : '\
-    <div class="navBar">\
-      <div class="tcell"></div>\
-      <div class="tcell w60">\
-      <button class="toggleControlPanel">open</button>\
-      </div>\
-    </div>\
-  '
-}
 
-var containerControlpanel = {
-  HTML : '\
-    <div class="navBar">\
-      <div class="tcell"></div>\
-      <div class="tcell w60">\
-      <button class="toggleControlPanel">open</button>\
-      </div>\
-    </div>\
-  '
-}
 
 var containerInlineconsole = {
   HTML : '\
@@ -95,15 +77,15 @@ var gui = {
     // nav bar container
     this.containerNavbar.setAttribute('class','containerNavbar');
     parent = document.body || document.querySelector('body');
-    parent.insertBefore(containerNavbar, parent.firstChild);
+    parent.insertBefore(this.containerNavbar, parent.firstChild);
     // control panel
     this.containerControlpanel.setAttribute('id','containerControlpanel');
     parent = document.body || document.querySelector('body');
-    parent.insertBefore(containerControlpanel, parent.firstChild);
+    parent.insertBefore(this.containerControlpanel, parent.firstChild);
     // inline console
     this.containerInlineconsole.setAttribute('id','containerInlineconsole');
     parent = document.querySelectorAll('table')[0].children[0].children[3].children[0];
-    parent.insertBefore(containerInlineconsole, null);
+    parent.insertBefore(this.containerInlineconsole, null);
     this.refresh();
     this.addFunctions();
   },
@@ -231,6 +213,8 @@ gui.construct();
   console.log(JSON.parse(window.localStorage.urlList));
 })();
 // --- MAIN end
+
+controlpanel.run();
 
 if (config.test) {
   test.run();
